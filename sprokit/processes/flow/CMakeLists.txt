@@ -6,14 +6,18 @@ set(flow_srcs
   distribute_process.cxx
   pass_process.cxx
   registration.cxx
-  sink_process.cxx)
+  sink_process.cxx
+  mux_process.cxx
+  )
 
 set(flow_private_headers
 
   collate_process.h
   distribute_process.h
   pass_process.h
-  sink_process.h)
+  sink_process.h
+  mux_process.h
+  )
 
 include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 
