@@ -99,22 +99,24 @@ class process_trampoline
 {
   public:
     using process::process;
-    void _configure() override;
-    void _init() override;
-    void _reset() override;
-    void _flush() override;
-    void _step() override;
-    void _reconfigure(kwiver::vital::config_block_sptr const& config) override;
-    sprokit::process::properties_t _properties() const override;
-    sprokit::process::properties_t _properties_over() const;
-    sprokit::process::ports_t _input_ports() const override;
-    sprokit::process::ports_t _output_ports() const override;
-    port_info_t _input_port_info(port_t const& port) override;
-    port_info_t _output_port_info(port_t const& port) override;
-    bool _set_input_port_type(port_t const& port, port_type_t const& new_type) override;
-    bool _set_output_port_type(port_t const& port, port_type_t const& new_type) override;
-    kwiver::vital::config_block_keys_t _available_config() const override;
-    sprokit::process::conf_info_t _config_info(kwiver::vital::config_block_key_t const& key) override;
+
+    virtual void _configure() override;
+    virtual void _init() override;
+    virtual void _reset() override;
+    virtual void _flush() override;
+    virtual void _step() override;
+    virtual void _reconfigure(kwiver::vital::config_block_sptr const& config) override;
+    virtual sprokit::process::properties_t _properties() const override;
+    virtual sprokit::process::properties_t _properties_over() const;
+    virtual sprokit::process::ports_t _input_ports() const override;
+    virtual sprokit::process::ports_t _output_ports() const override;
+    virtual port_info_t _input_port_info(port_t const& port) override;
+    virtual port_info_t _output_port_info(port_t const& port) override;
+    virtual bool _set_input_port_type(port_t const& port, port_type_t const& new_type) override;
+    virtual bool _set_output_port_type(port_t const& port, port_type_t const& new_type) override;
+    virtual kwiver::vital::config_block_keys_t _available_config() const override;
+    virtual sprokit::process::conf_info_t _config_info(kwiver::vital::config_block_key_t const& key) override;
+
 };
 
 void declare_input_port_2(sprokit::process &self, sprokit::process::port_t const& port, sprokit::process::port_info_t const& port_info);
@@ -402,10 +404,15 @@ PYBIND11_MODULE(process, m)
     .def("config_info", &sprokit::process::config_info, call_guard<kwiver::vital::python::gil_scoped_release>()
       , (arg("config"))
       , "Returns information about the given configuration key.")
+
+    .def("config_diff", &sprokit::process::config_diff, call_guard<kwiver::vital::python::gil_scoped_release>()
+         , "Returns config difference information.")
+
     .def("name", &sprokit::process::name, call_guard<kwiver::vital::python::gil_scoped_release>()
       , "Returns the name of the process.")
     .def("type", &sprokit::process::type, call_guard<kwiver::vital::python::gil_scoped_release>()
       , "Returns the type of the process.")
+
     .def_readonly_static("property_no_threads", &sprokit::process::property_no_threads)
     .def_readonly_static("property_no_reentrancy", &sprokit::process::property_no_reentrancy)
     .def_readonly_static("property_unsync_input", &sprokit::process::property_unsync_input)
